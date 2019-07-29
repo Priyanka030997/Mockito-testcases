@@ -1,5 +1,7 @@
 package com.stackroute.userservice.controller;
 
+import com.stackroute.exception.TrackAlreadyExistException;
+import com.stackroute.exception.TrackNotFoundException;
 import com.stackroute.userservice.domain.Track;
 import com.stackroute.userservice.service.TrackService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,60 +16,56 @@ import java.util.List;
 public class TrackController {
     @Autowired
     TrackService trackService;
+    @Autowired
+    ErrorController errorController;
 
-    public TrackController(TrackService trackService)
-    {
+
+    public TrackController(TrackService trackService) {
+
         this.trackService = trackService;
     }
-    @PostMapping(value="/save")
-    public ResponseEntity<?> saveTrack(@RequestBody Track track)
-    {
+
+    @PostMapping(value = "/save")
+    public ResponseEntity<?> saveTrack(@RequestBody Track track) {
         ResponseEntity responseEntity;
-        try
-        {
+        try {
             trackService.saveTrack(track);
-            responseEntity=new ResponseEntity<String>("sucessfully created", HttpStatus.CREATED);
-        }
-        catch (Exception ex)
-        {
-            responseEntity=new ResponseEntity<String>(ex.getMessage(), HttpStatus.CONFLICT);
+            responseEntity = new ResponseEntity<String>("sucessfully created", HttpStatus.CREATED);
+        } catch (TrackAlreadyExistException ex) {
+            //responseEntity = errorController.exception1();
+            responseEntity = new ResponseEntity<String>(ex.getMessage(),HttpStatus.CONFLICT);
         }
         return responseEntity;
     }
 
-    @GetMapping(value="/track")
-    public ResponseEntity<?> getAllTracks()
-    {
-      return new ResponseEntity<List<Track>>(trackService.getAllTracks(),HttpStatus.OK);
+
+    @GetMapping(value = "/track")
+    public ResponseEntity<?> getAllTracks() {
+        return new ResponseEntity<List<Track>>(trackService.getAllTracks(), HttpStatus.OK);
     }
 
-    @PostMapping(value="/update")
-    public ResponseEntity<?> updateTrack(@RequestBody Track track)
-    {
+
+    @PostMapping(value = "/update")
+    public ResponseEntity<?> updateTrack(@RequestBody Track track) {
         ResponseEntity responseEntity;
-        try
-        {
+        try {
             trackService.updateTrack(track);
-            responseEntity=new ResponseEntity<String>("sucessfully updated", HttpStatus.CREATED);
-        }
-        catch (Exception ex)
-        {
-            responseEntity=new ResponseEntity<String>(ex.getMessage(), HttpStatus.CONFLICT);
+            responseEntity = new ResponseEntity<String>("sucessfully updated", HttpStatus.CREATED);
+        } catch (TrackNotFoundException ex) {
+            responseEntity = errorController.exception2();
         }
         return responseEntity;
     }
-    @DeleteMapping(value="/delete/{id}")
-    public ResponseEntity<?> deleteTrackById(@PathVariable("id") int id)
-    {
+
+
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<?> deleteTrackById(@PathVariable("id") int id) {
         ResponseEntity responseEntity;
-        try
-        {
-        trackService.deleteTrackById(id);
-        responseEntity=new ResponseEntity<String>("sucessfully deleted", HttpStatus.CREATED);
-    }
-        catch(Exception ex)
-        {
-            responseEntity=new ResponseEntity<String>(ex.getMessage(), HttpStatus.CONFLICT);
+        try {
+            trackService.deleteTrackById(id);
+            responseEntity = new ResponseEntity<String>("sucessfully deleted", HttpStatus.CREATED);
+        } catch (Exception ex) {
+            responseEntity = new ResponseEntity<String>(ex.getMessage(), HttpStatus.CONFLICT);
         }
         return responseEntity;
     }
