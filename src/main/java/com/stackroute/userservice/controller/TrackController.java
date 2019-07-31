@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value="api/v1")
 public class TrackController {
+    //autowired the trackservice and errorcontroller
     @Autowired
     TrackService trackService;
     @Autowired
@@ -24,7 +25,7 @@ public class TrackController {
 
         this.trackService = trackService;
     }
-
+//method for insert the track
     @PostMapping(value = "/save")
     public ResponseEntity<?> saveTrack(@RequestBody Track track) {
         ResponseEntity responseEntity;
@@ -38,13 +39,13 @@ public class TrackController {
         return responseEntity;
     }
 
-
+//method for get all tracks
     @GetMapping(value = "/track")
     public ResponseEntity<?> getAllTracks() {
         return new ResponseEntity<List<Track>>(trackService.getAllTracks(), HttpStatus.OK);
     }
 
-
+//method for update the track
     @PostMapping(value = "/update")
     public ResponseEntity<?> updateTrack(@RequestBody Track track) {
         ResponseEntity responseEntity;
@@ -57,7 +58,7 @@ public class TrackController {
         return responseEntity;
     }
 
-
+//method for delete the track and use id as PathVariable
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<?> deleteTrackById(@PathVariable("id") int id) {
         ResponseEntity responseEntity;

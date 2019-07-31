@@ -57,6 +57,7 @@ public class TrackControllerTest {
 
     @Test
     public void saveTrack() throws Exception {
+        //verify that the saveTrack method has been invoked
         when(trackService.saveTrack(any())).thenReturn(track);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/save")
                 .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
@@ -66,6 +67,7 @@ public class TrackControllerTest {
     }
     @Test
     public void saveTrackFailure() throws Exception {
+        //verify that the saveTrack method has been invoked
         when(trackService.saveTrack(any())).thenThrow(TrackAlreadyExistException.class);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/save")
                 .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
@@ -76,6 +78,7 @@ public class TrackControllerTest {
 
     @Test
     public void getAllTracks() throws Exception {
+        //verify that the getAllTracks method has been invoked
         when(trackService.getAllTracks()).thenReturn(list);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/track")
                 .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
@@ -85,7 +88,7 @@ public class TrackControllerTest {
 
     }
 
-
+//converting a JSON String to a Java object using the ObjectMapper class
     private static String asJsonString(final Object obj)
     {
         try{

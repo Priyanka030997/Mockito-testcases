@@ -37,23 +37,25 @@ public class TrackRepositoryTest {
         trackRepository.deleteAll();
     }
 
-
+    //positive testcase for saveTrack
     @Test
     public void testSaveTrack(){
         trackRepository.save(track);
         Track fetchTrack = trackRepository.findById(track.getId()).get();
+        //assertEquals
         Assert.assertEquals(10,fetchTrack.getId());
 
     }
-
+    //negative testcase for saveTrack
     @Test
     public void testSaveTrackFailure(){
         Track testTrack = new Track(56,"regfmd","adwajd");
         trackRepository.save(track);
         Track fetchTrack = trackRepository.findById(track.getId()).get();
+        //assertNotSame
         Assert.assertNotSame(testTrack,track);
     }
-
+//testcase for getAllTracks
     @Test
     public void testGetAllTrack(){
         Track t1 = new Track(43,"djrdt","efjegnj");

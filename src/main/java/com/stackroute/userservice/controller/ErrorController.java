@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class ErrorController {
+    //method for handle TrackAlreadyExistException
     @ExceptionHandler(value= TrackAlreadyExistException.class)
     public ResponseEntity<Object> exception1()
     {
         return new ResponseEntity<>("Track already exists", HttpStatus.NOT_FOUND);
     }
+    //method for handle TrackNotFoundException
     @ExceptionHandler(value= TrackNotFoundException.class)
     public ResponseEntity<Object> exception2()
     {
